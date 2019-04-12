@@ -37,7 +37,7 @@ import random
 from time import sleep
 import cv2
 
-def mtcnn_simplify(image_path,image_size,margin,gpu_memory_fraction,detect_multiple_faces,text):
+def mtcnn_simplify(image_path,image_size,margin,gpu_memory_fraction,detect_multiple_faces):
    
     sleep(random.random())
    
@@ -66,6 +66,7 @@ def mtcnn_simplify(image_path,image_size,margin,gpu_memory_fraction,detect_multi
 
         bounding_boxes, _ = detect_face.detect_face(img, minsize, pnet, rnet, onet, threshold, factor)
         nrof_faces = bounding_boxes.shape[0]
+        # --------需要修改，建立一个文件夹用来储存无法剪裁的文件
         with open('E:/Desktop/unableface.txt','w') as text:
             if nrof_faces>0:
                 det = bounding_boxes[:,0:4]
@@ -89,7 +90,7 @@ def mtcnn_simplify(image_path,image_size,margin,gpu_memory_fraction,detect_multi
                     image_new_path = os.path.dirname(image_new_name)
                     mkdir(image_new_path)
                     cv2.imwrite(image_new_name,img_mtcnn)
-                    print(image_new_name)
+                    # print(image_new_name)
             else:
                 print('unable to align"%s"'% image_path)
                 text.write('%s\n'%(image_path))  
@@ -119,7 +120,7 @@ def main(rootdir):
     print('Total number of the picture:%d' % len(image_path))
     for image in image_path:
         # --------------需要修改，只要修改224即可，为剪裁下来的尺寸
-        mtcnn_simplify(image,224,44,1,False,text)
+        mtcnn_simplify(image,224,44,1,False)
 
 
 if __name__ == '__main__':
