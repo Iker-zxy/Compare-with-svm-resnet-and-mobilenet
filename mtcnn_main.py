@@ -84,6 +84,7 @@ def mtcnn_simplify(image_path,image_size,margin,gpu_memory_fraction,detect_multi
                     cropped = img[bb[1]:bb[3],bb[0]:bb[2],:]
                     # scaled 就是检测对齐剪裁过后的结果
                     img_mtcnn = misc.imresize(cropped, (image_size, image_size), interp='bilinear') 
+                    # ---------需要修改，为储存的目录
                     image_new_name = 'E:'+image_path.split(':')[-1].split('.')[0]+'.jpg'
                     image_new_path = os.path.dirname(image_new_name)
                     mkdir(image_new_path)
@@ -116,11 +117,12 @@ def mkdir(path):
 def main(rootdir):
     image_path = list_all_files(rootdir)
     print('Total number of the picture:%d' % len(image_path))
-    with open('E:/Desktop/unableface.txt','w') as text:
-        for image in image_path:
-            mtcnn_simplify(image,224,44,1,False,text)
+    for image in image_path:
+        # --------------需要修改，只要修改224即可，为剪裁下来的尺寸
+        mtcnn_simplify(image,224,44,1,False,text)
 
 
 if __name__ == '__main__':
+    # ------------需要修改，数据集的原始地址
     main('D:/Desktop/hyperspectral')
 
